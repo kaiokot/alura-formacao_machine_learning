@@ -19,15 +19,26 @@ modelo.fit(dados, teste)
 animal_misterioso1 = [1, 1, 1]
 animal_misterioso2 = [0, 1, 0]
 animal_misterioso3 = [0, 1, 1]
-animal_misterioso4 = [1, 0, 1]
-
-previsoes = [animal_misterioso1, animal_misterioso2,
-             animal_misterioso3, animal_misterioso4]
 
 
-testes = [1, -1, 1, 1]
-             
+testes = [animal_misterioso1, animal_misterioso2,
+          animal_misterioso3]
 
-previsao = modelo.predict(previsoes)
 
-print(previsao)
+marcacoes_teste = [1, -1, -1]
+
+resultado = modelo.predict(testes)
+print(resultado)
+
+diferencas = resultado - marcacoes_teste
+print(diferencas)
+
+acertos = [d for d in diferencas if d == 0]
+total_de_acertos = len(acertos)
+print(total_de_acertos)
+
+total_testes = len(testes)
+
+acuracia = 100.0 * total_de_acertos / total_testes
+
+print(acuracia)
