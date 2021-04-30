@@ -1,32 +1,38 @@
+import pandas as pd
 from sklearn.naive_bayes import MultinomialNB
 from dados import carregar_buscas
 
-X, Y = carregar_buscas()
+df = pd.read_csv("buscas.csv")
+
+X_df = df[["home", "busca", "logado"]]
+Y_df = df["comprou"]
 
 
-print(X)
+Xdummies = pd.get_dummies(X_df)
+Ydummies = Y_df
 
-# treino_dados = X[:90]
-# treino_marcacoes = Y[:90]
+X = Xdummies.values
+Y = Ydummies.values
 
-# teste_dados = X[-9:]
-# teste_marcacoes = Y[-9:]
+tamanho_de_treino = int(0.9 * len(Y))
 
+treino_dados = X[:tamanho_de_treino]
+treino_marcacoes = Y[:tamanho_de_treino]
 
-# modelo = MultinomialNB()
+tamanho_de_teste = len(Y) - tamanho_de_treino
+teste_dados = X[-tamanho_de_teste:]
+teste_marcacoes = Y[-tamanho_de_teste:]
 
-# modelo.fit(treino_dados, treino_marcacoes)
+modelo = MultinomialNB()
+modelo.fit(treino_dados, treino_marcacoes)
 
-# resultado = modelo.predict(teste_dados)
+resultado = modelo.predict(teste_dados)
+diferencas = resultado - teste_marcacoes
 
-# diferencas = resultado - teste_marcacoes
+acertos = [d for d in diferencas if d == 0]
+total_de_acertos = len(acertos)
 
-# acertos = [d for d in diferencas if d == 0]
-# total_de_acertos = len(acertos)
+total_testes = len(teste_dados)
+acuracia = 100.0 * total_de_acertos / total_testes
 
-# total_testes = len(teste_dados)
-
-# acuracia = 100.0 * total_de_acertos / total_testes
-
-
-# print(acuracia)
+print(acuracia)
