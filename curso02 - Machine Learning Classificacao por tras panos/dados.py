@@ -3,7 +3,7 @@ import csv
 def carregar_acessos():
     X = []
     Y = []
-    arquivo = open("acesso.csv", "rb")
+    arquivo = open("acessos.csv", "rb")
     leitor = csv.reader(arquivo)
 
     leitor.next()
