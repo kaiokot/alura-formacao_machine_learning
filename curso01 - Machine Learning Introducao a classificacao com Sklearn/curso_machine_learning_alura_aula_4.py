@@ -7,52 +7,61 @@ Original file is located at
     https://colab.research.google.com/drive/1JAw3KWxC57X8Fl69csaHkqOxo1zd-UAb
 """
 
-!pip install graphviz==0.10
+import graphviz
+from sklearn.tree import export_graphviz
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC
+from sklearn.preprocessing import StandardScaler
+from sklearn.dummy import DummyClassifier
+from sklearn.svm import LinearSVC
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
+from datetime import datetime
+import pandas as pd
+!pip install graphviz == 0.10
 !apt-get install graphviz
 
-import pandas as pd
 
 uri = 'https://gist.githubusercontent.com/guilhermesilveira/4d1d4a16ccbf6ea4e0a64a38a24ec884/raw/afd05cb0c796d18f3f5a6537053ded308ba94bf7/car-prices.csv'
 dados = pd.read_csv(uri)
 dados.head()
 
-dados.columns = ["nao_usar","milhas_por_ano","ano_do_modelo", "preco","vendido"]
+dados.columns = ["nao_usar", "milhas_por_ano",
+                 "ano_do_modelo", "preco", "vendido"]
 dados.head()
 
-vendido_troca  ={
+vendido_troca = {
     "no": 0,
-    "yes":1
+    "yes": 1
 }
 
 dados.vendido = dados.vendido.map(vendido_troca)
 dados.head()
 
-from datetime import datetime
 today_year = datetime.today().year
-dados["idade_do_modelo"] =today_year - dados.ano_do_modelo
+dados["idade_do_modelo"] = today_year - dados.ano_do_modelo
 dados.head()
 
 dados["km_por_ano"] = dados.milhas_por_ano * 1.60934
 dados.head()
 
-dados = dados.drop(columns=["nao_usar","milhas_por_ano","ano_do_modelo"], axis=1)
+dados = dados.drop(
+    columns=["nao_usar", "milhas_por_ano", "ano_do_modelo"], axis=1)
 dados.head()
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.svm import LinearSVC
 
-x = dados[["preco","idade_do_modelo","km_por_ano"]]
+x = dados[["preco", "idade_do_modelo", "km_por_ano"]]
 y = dados["vendido"]
 
 
 SEED = 20
-treino_x, teste_x, treino_y, teste_y = train_test_split(x,y, 
-                                                        random_state = SEED, test_size = 0.25,
-                                                        stratify = y)
+treino_x, teste_x, treino_y, teste_y = train_test_split(x, y,
+                                                        random_state=SEED, test_size=0.25,
+                                                        stratify=y)
 
-modelo =  LinearSVC(random_state = SEED)
-print("Treinaremos com %d elementos e testaremos com %d elementos" %(len(treino_x),len(teste_x)))
+modelo = LinearSVC(random_state=SEED)
+print("Treinaremos com %d elementos e testaremos com %d elementos" %
+      (len(treino_x), len(teste_x)))
 modelo.fit(treino_x, treino_y)
 
 previsoes = modelo.predict(teste_x)
@@ -61,9 +70,8 @@ taxa_de_acerto = accuracy_score(teste_y, previsoes)
 
 print("Taxa de acerto %.2f%%" % (taxa_de_acerto * 100))
 
-from sklearn.dummy import DummyClassifier
 
-dummy =  DummyClassifier()
+dummy = DummyClassifier()
 dummy.fit(treino_x, treino_y)
 previsoes = dummy.predict(teste_x)
 
@@ -71,29 +79,22 @@ acuracia = accuracy_score(teste_y, previsoes)
 
 print("A acurácia do algoritmo Dummy foi de %.2f%%" % (acuracia * 100))
 
-from sklearn.dummy import DummyClassifier
 
-dummy =  DummyClassifier(random_state = SEED)
+dummy = DummyClassifier(random_state=SEED)
 dummy.fit(treino_x, treino_y)
 acuracia = dummy.score(teste_x, teste_y)
 
 print("A acurácia do algoritmo Dummy foi de %.2f%%" % (acuracia * 100))
 
-from sklearn.preprocessing import StandardScaler
-
-
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.svm import SVC
-
 
 SEED = 8
-raw_treino_x, raw_teste_x, treino_y, teste_y = train_test_split(x,y, 
-                                                        random_state = SEED, test_size = 0.25,
-                                                        stratify = y)
+raw_treino_x, raw_teste_x, treino_y, teste_y = train_test_split(x, y,
+                                                                random_state=SEED, test_size=0.25,
+                                                                stratify=y)
 
-modelo = SVC(random_state = SEED)
-print("Treinaremos com %d elementos e testaremos com %d elementos" %(len(raw_treino_x),len(raw_teste_x)))
+modelo = SVC(random_state=SEED)
+print("Treinaremos com %d elementos e testaremos com %d elementos" %
+      (len(raw_treino_x), len(raw_teste_x)))
 
 scaler = StandardScaler()
 scaler.fit(raw_treino_x)
@@ -108,19 +109,15 @@ acuracia = accuracy_score(teste_y, previsoes)
 
 print("A acurácia do algoritmo Dummy foi de %.2f%%" % (acuracia * 100))
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.tree import DecisionTreeClassifier
-
 
 SEED = 8
-raw_treino_x, raw_teste_x, treino_y, teste_y = train_test_split(x,y, 
-                                                        random_state = SEED, test_size = 0.25,
-                                                        stratify = y)
+raw_treino_x, raw_teste_x, treino_y, teste_y = train_test_split(x, y,
+                                                                random_state=SEED, test_size=0.25,
+                                                                stratify=y)
 
-modelo = DecisionTreeClassifier(random_state = SEED, max_depth=3)
-print("Treinaremos com %d elementos e testaremos com %d elementos" %(len(raw_treino_x),len(raw_teste_x)))
+modelo = DecisionTreeClassifier(random_state=SEED, max_depth=3)
+print("Treinaremos com %d elementos e testaremos com %d elementos" %
+      (len(raw_treino_x), len(raw_teste_x)))
 
 
 modelo.fit(raw_treino_x, treino_y)
@@ -130,15 +127,12 @@ acuracia = accuracy_score(teste_y, previsoes)
 
 print("A acurácia do algoritmo Dummy foi de %.2f%%" % (acuracia * 100))
 
-from sklearn.tree import export_graphviz
-import graphviz 
 
 features = x.columns
-dot_data = export_graphviz(modelo, out_file=None, 
+dot_data = export_graphviz(modelo, out_file=None,
                            filled=True,
                            rounded=True,
                            feature_names=features,
-                           class_names=["nao","sim"])
+                           class_names=["nao", "sim"])
 grafikos = graphviz.Source(dot_data)
 grafikos
-

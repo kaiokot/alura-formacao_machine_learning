@@ -7,18 +7,21 @@ Original file is located at
     https://colab.research.google.com/drive/1G5gC9Xh7kRrOSyR3JIaY7b2UQ6XxoCsN
 """
 
-import pandas as pd 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.svm import LinearSVC
+import pandas as pd
 
-uri='https://gist.githubusercontent.com/guilhermesilveira/2d2efa37d66b6c84a722ea627a897ced/raw/10968b997d885cbded1c92938c7a9912ba41c615/tracking.csv'
+uri = 'https://gist.githubusercontent.com/guilhermesilveira/2d2efa37d66b6c84a722ea627a897ced/raw/10968b997d885cbded1c92938c7a9912ba41c615/tracking.csv'
 
 dados = pd.read_csv(uri)
 
 dados.head()
 
-dados.columns = ["principal","como_funciona","contato","comprou"]
+dados.columns = ["principal", "como_funciona", "contato", "comprou"]
 dados.head()
 
-x = dados[["principal","como_funciona","contato"]]
+x = dados[["principal", "como_funciona", "contato"]]
 x.head()
 
 y = dados["comprou"]
@@ -30,10 +33,8 @@ treino_y = y[:75]
 teste_x = x[75:]
 teste_y = y[75:]
 
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
 
-modelo =  LinearSVC()
+modelo = LinearSVC()
 
 modelo.fit(treino_x, treino_y)
 
@@ -45,14 +46,12 @@ print("Taxa de acerto %.2f%%" % (taxa_de_acerto * 100))
 
 """## **Usando a biblioteca para separar o treino / teste**"""
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.svm import LinearSVC
 
 SEED = 20
-treino_x, teste_x, treino_y, teste_y = train_test_split(x,y, random_state = SEED, test_size = 0.25)
+treino_x, teste_x, treino_y, teste_y = train_test_split(
+    x, y, random_state=SEED, test_size=0.25)
 
-modelo =  LinearSVC()
+modelo = LinearSVC()
 
 modelo.fit(treino_x, treino_y)
 
@@ -66,18 +65,16 @@ treino_y.value_counts()
 
 teste_y.value_counts()
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn.svm import LinearSVC
 
 SEED = 20
-treino_x, teste_x, treino_y, teste_y = train_test_split(x,y, 
-                                                        random_state = SEED, test_size = 0.25,
-                                                        stratify = y)
+treino_x, teste_x, treino_y, teste_y = train_test_split(x, y,
+                                                        random_state=SEED, test_size=0.25,
+                                                        stratify=y)
 
-print("Treinaremos com %d elementos e testaremos com %d elementos" %(len(treino_x),len(teste_x)))
+print("Treinaremos com %d elementos e testaremos com %d elementos" %
+      (len(treino_x), len(teste_x)))
 
-modelo =  LinearSVC()
+modelo = LinearSVC()
 
 modelo.fit(treino_x, treino_y)
 
@@ -90,4 +87,3 @@ print("Taxa de acerto %.2f%%" % (taxa_de_acerto * 100))
 treino_y.value_counts()
 
 teste_y.value_counts()
-
