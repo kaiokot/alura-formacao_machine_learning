@@ -70,9 +70,9 @@ fit_and_predict("Vencedor", vencedor, treino_dados, treino_marcacoes,
                 validacao_dados, validacao_marcacoes, False)
 
 
-acerto_de_um = sum(treino_marcacoes)
-acerto_de_zeros = len(treino_marcacoes) - acerto_de_um
+acerto_de_um = sum(validacao_marcacoes)
+acerto_de_zeros = len(validacao_marcacoes) - acerto_de_um
 taxa_de_acerto_base = 100.0 * \
-    max(acerto_de_um, acerto_de_zeros) / len(treino_marcacoes)
+    max(acerto_de_um, acerto_de_zeros) / len(validacao_marcacoes)
 
 print("Taxa de acerto baseline %2f" % taxa_de_acerto_base)
