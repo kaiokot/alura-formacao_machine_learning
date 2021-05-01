@@ -15,15 +15,23 @@ Ydummies = Y_df
 X = Xdummies.values
 Y = Ydummies.values
 
+porcentagem_de_treino = 0.8
+porcentagem_de_teste = 0.1
 
-tamanho_de_treino = int(0.9 * len(Y))
+tamanho_de_treino = int(porcentagem_de_treino * len(Y))
+tamanho_de_teste = int(porcentagem_de_teste * len(Y))
+tamanho_de_validacao = len(Y) - tamanho_de_treino - tamanho_de_teste
 
-treino_dados = X[:tamanho_de_treino]
-treino_marcacoes = Y[:tamanho_de_treino]
 
-tamanho_de_teste = len(Y) - tamanho_de_treino
-teste_dados = X[-tamanho_de_teste:]
-teste_marcacoes = Y[-tamanho_de_teste:]
+treino_dados = X[0:tamanho_de_treino]
+treino_marcacoes = Y[0:tamanho_de_treino]
+
+fim_de_teste = tamanho_de_treino + tamanho_de_teste
+teste_dados = X[tamanho_de_treino:fim_de_teste]
+teste_marcacoes = Y[tamanho_de_treino:fim_de_teste]
+
+valicacao_dados = X[fim_de_teste:]
+valicacao_marcacoes = Y[fim_de_teste:]
 
 
 def fit_and_predict(algoritmo, modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes):
