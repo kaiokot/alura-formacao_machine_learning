@@ -30,12 +30,13 @@ fim_de_teste = tamanho_de_treino + tamanho_de_teste
 teste_dados = X[tamanho_de_treino:fim_de_teste]
 teste_marcacoes = Y[tamanho_de_treino:fim_de_teste]
 
-valicacao_dados = X[fim_de_teste:]
-valicacao_marcacoes = Y[fim_de_teste:]
+validacao_dados = X[fim_de_teste:]
+validacao_marcacoes = Y[fim_de_teste:]
 
 
-def fit_and_predict(algoritmo, modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes):
-    modelo.fit(treino_dados, treino_marcacoes)
+def fit_and_predict(algoritmo, modelo, treino_dados, treino_marcacoes, teste_dados, teste_marcacoes, fit = True):
+    if fit:
+        modelo.fit(treino_dados, treino_marcacoes)
 
     resultado = modelo.predict(teste_dados)
     diferencas = resultado - teste_marcacoes
@@ -47,16 +48,26 @@ def fit_and_predict(algoritmo, modelo, treino_dados, treino_marcacoes, teste_dad
     acuracia = 100.0 * total_de_acertos / total_testes
 
     print("Taxa de acerto algoritmo {0} : {1}".format(algoritmo, acuracia))
+    return acuracia
 
 
-modelo = MultinomialNB()
-fit_and_predict("MultinomialNB", modelo, treino_dados, treino_marcacoes,
-                teste_dados, teste_marcacoes)
+modeloMultinomial = MultinomialNB()
+resultadoMultinomial = fit_and_predict("MultinomialNB", modeloMultinomial, treino_dados, treino_marcacoes,
+                                       teste_dados, teste_marcacoes)
 
 
-modelo = AdaBoostClassifier()
-fit_and_predict("AdaBoostClassifier", modelo, treino_dados, treino_marcacoes,
-                teste_dados, teste_marcacoes)
+modeloAdaBoost = AdaBoostClassifier()
+resultadoAdaBoost = fit_and_predict("AdaBoostClassifier", modeloAdaBoost, treino_dados, treino_marcacoes,
+                                    teste_dados, teste_marcacoes)
+
+
+if resultadoMultinomial > resultadoAdaBoost:
+    vencedor = modeloMultinomial
+else:
+    vencedor = modeloAdaBoost
+
+fit_and_predict("Vencedor", vencedor, treino_dados, treino_marcacoes,
+                validacao_dados, validacao_marcacoes, False)
 
 
 acerto_de_um = sum(treino_marcacoes)
