@@ -15,12 +15,6 @@ X = Xdummies.values
 Y = Ydummies.values
 
 
-acerto_de_um = sum(Y)
-acerto_de_zeros = len(Y) - acerto_de_um
-taxa_de_acerto_base = 100.0 * max(acerto_de_um,acerto_de_zeros) / len(Y)
-
-print("Taxa de acerto baseline %2f" % taxa_de_acerto_base)
-
 tamanho_de_treino = int(0.9 * len(Y))
 
 treino_dados = X[:tamanho_de_treino]
@@ -43,3 +37,11 @@ total_testes = len(teste_dados)
 acuracia = 100.0 * total_de_acertos / total_testes
 
 print("Taxa de acerto algoritmo %2f" % acuracia)
+
+
+
+acerto_de_um = sum(treino_marcacoes)
+acerto_de_zeros = len(treino_marcacoes) - acerto_de_um
+taxa_de_acerto_base = 100.0 * max(acerto_de_um,acerto_de_zeros) / len(treino_marcacoes)
+
+print("Taxa de acerto baseline %2f" % taxa_de_acerto_base)
